@@ -1,0 +1,17 @@
+.carimg{
+    height: 70vh;
+}
+
+.shopcardimg{
+    height: 20rem;
+    width: 14rem;
+    padding-top: 3.4rem;
+   
+}
+.shopcard{
+    display: flex;
+    justify-content: space-around;
+}
+.card1{
+    width: 15rem;
+}

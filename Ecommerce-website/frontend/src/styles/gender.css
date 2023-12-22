@@ -1,0 +1,153 @@
+html{
+    background-color: #fdf8f0;
+}
+.body {
+    background-color: #fdf8f0;
+   
+}
+.bodyy {
+    background-color: #fdf8f0;
+    min-height: 100vh;
+}
+.container {
+    margin: 0 7rem !important;
+ 
+}
+.itemflex{
+    display: flex;
+    gap: 3rem;
+   flex-wrap: wrap;
+}
+.navmar{
+    margin-top: 6rem;
+}
+
+
+
+
+.card-size{
+    width: 18rem !important;
+    border: none !important;
+    transition: .3s;
+  
+   
+}
+
+.cardimg{
+    height: 20rem;
+}
+.cardbody{
+   text-align: center; 
+}
+.card-text{
+    height: 1.8rem;
+    width: 15rem !important;
+    overflow: hidden;
+    margin-bottom: 3px; 
+}
+.cardbody button{
+    background-color: grey ;
+    border: none;
+    margin-left: 1rem;
+    color: white;
+}
+.cardbody button:hover {
+   
+    background-color: black !important;
+}
+
+.liked{
+    position: absolute;
+    bottom: 36%;
+    right: 6%;
+    color: #ff004f !important;
+    font-size: 25px;
+    cursor: pointer;
+}
+.cart-icon{
+    padding-left: 5px;
+}
+.d-block{
+ 
+    height: 30vh;
+}
+
+
+/*--------------------------------------corousal---------------------------------------------*/
+
+.carousel {
+  
+    width: 100%;
+    
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2rem;
+}
+
+.d-block {
+    height: 60vh;
+
+
+
+}
+
+#car {
+    padding-bottom: 10rem;
+}
+.carr{
+    padding-top: 7rem;
+}
+
+
+/*-----------------------------------itemdetails----------------------------------------------*/
+
+.itemdetails-nav{
+    margin-top: 5rem;
+    padding:1.9rem 6rem;
+    display: flex;
+    gap:3rem
+}
+.flex1{
+    flex-basis: 6%;
+}
+.flex2 {
+    flex-basis: 30%;
+   
+}
+.flex3 {
+    flex-basis: 60%;
+}
+.flex11{
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+.flex31{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+.size{
+    display: flex;
+    gap: 1rem;
+}
+.size p{
+    background-color: grey;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.itemadd{
+    width:199px;
+    height: 50px;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}

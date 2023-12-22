@@ -1,0 +1,71 @@
+.bodyyy{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color:#96c2db ;
+    min-height: 100vh;
+}
+.bodyyy form{
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 3rem;
+    padding: 3rem;
+
+   
+}
+.bodyyy form input{
+    padding: 1rem;
+   border: solid .01rem black;
+    height: 3rem;
+    width: 19rem;
+    outline: none;
+    border-radius: .3rem;
+    
+}
+.bodyyy form button{
+  border: none;
+  height: 3rem;
+  width: 10rem;
+  outline-style: none;
+  margin-bottom: .5rem;
+  background-color: #96c2db;
+  border-radius: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+
+}
+
+
+/*---------------------------------admin add item-----------------------------------------*/
+
+.adminform{
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+.adminform input{
+    width: 30rem;
+    height: 3rem;
+    padding: .5rem;
+}
+.container form span button{
+    margin-left: 1rem;
+}
+
+.hr{
+border: none;
+width: 100%;
+height: 5px;
+border-radius: 10px;
+background-color:black ;
+    margin: 0;
+    padding: 0;
+}

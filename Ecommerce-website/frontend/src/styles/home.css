@@ -1,0 +1,96 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.body{
+    background-color: #9f9b9c;
+}
+.container{
+    margin:0 7rem;
+    padding-bottom: 1rem;
+   
+}
+.nav{
+    padding-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position:fixed;
+    z-index: 5;
+    background-color: #fbe3e8;
+}
+.logoo{
+    width: 4rem;
+    height: 4rem;
+    margin-right: 14rem;;
+    background-image: url(../images/logo.png);
+    background-size: 150%;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: 40%;
+    background-position-x:50% ;
+    transition: 5s;
+}
+.logoo:hover{
+    transform: scale(1.8);
+}
+.nav1{
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    list-style: none;
+        margin-right: 10rem;
+}
+
+
+
+.nav1 li{
+    font-size: 18px;
+    font-weight: 500;
+    transition: .5s;
+}
+
+.nav1 li:hover{
+    color: red;
+    transform: translateY(-5px);
+}
+.link {
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    transition: .5s;
+}
+.link:hover{
+    color:red;
+    transform: translateY(-5px);
+}
+.nav-icon{
+    margin-left: .3rem;
+    font-size: 18px;
+}
+
+
+
+/*--------------------------------------corousal---------------------------------------------*/
+
+.carousel{
+    margin-top: 6rem;
+    width: 80%;
+    margin-left: 11%;  
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+    
+}
+.d-block{
+    height: 80vh;
+    border-radius: 6px;
+    
+    
+}
+#car{
+    padding-bottom: 10rem;
+}
