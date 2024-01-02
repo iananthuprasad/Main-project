@@ -12,7 +12,7 @@ const AddProduct = () => {
     const { items,setItems }=useContext(Mycontext)
 
 
- const [productId, setProductId] = useState("");
+  const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productDescription, setProductDescription] = useState("");
