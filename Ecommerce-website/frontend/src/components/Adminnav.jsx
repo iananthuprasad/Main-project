@@ -6,7 +6,7 @@ import { Link, useNavigate} from "react-router-dom";
 
 const Adminnav = () => {
   const [menu, setMenu] = useState("shop");
-  console.log(menu);
+ 
 
  const nav=useNavigate()
 

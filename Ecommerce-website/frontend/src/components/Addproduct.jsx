@@ -3,19 +3,19 @@ import { Form, Button } from "react-bootstrap";
 import { Mycontext } from "../Context";
 import { Link } from "react-router-dom";
 import Adminnav from "./Adminnav";
+import axios from "axios";
 
 const AddProduct = () => {
 
 
     
 
-    const { items,setItems }=useContext(Mycontext)
-
-
-  const [productId, setProductId] = useState("");
-  const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState("");
-  const [productDescription, setProductDescription] = useState("");
+   
+   const { items,setItems }=useContext(Mycontext)
+   const [productId, setProductId] = useState("");
+   const [productName, setProductName] = useState("");
+   const [productPrice, setProductPrice] = useState("");
+   const [productDescription, setProductDescription] = useState("");
    const [productImage, setProductImage] = useState("");
    const [productCategory, setProductCategory] = useState("");
    const {newitems,setNewitems}=useContext(Mycontext)
@@ -23,34 +23,55 @@ const AddProduct = () => {
 
 
 
-  const handleAddProduct = () => {
+const handleAddProduct = async () => {
+  try {
+    if (
+      productId !== "" &&
+      productDescription !== "" &&
+      productCategory !== "" &&
+      productPrice !== "" &&
+      productName !== "" &&
+      productImage !== ""
+    ) {
+      const existingItem = items.find((item) => item.id === productId);
+      if (!existingItem) {
+        const newItem = {
+          id:productId,
+          name:productName,
+          category:productCategory,
+          price:productPrice,
+          image:productImage,
+          description:productDescription,
+        };
 
-    if(productId!="" && productDescription!="" &&productCategory!="" &&productPrice!="" && productName!="" && productImage!=""){
+        const response = await axios.post(
+          "http://localhost:8000/api/products/",
+          newItem
+        );
 
-      const abc = items.find((item) => item.id === productId);
-if(!abc){
-    const newProduct = {
-      id: productId,
-      name: productName,
-      price: parseFloat(productPrice),
-      image:productImage,
-      category: productCategory,
-      description: productDescription,
-    };
+        console.log("Item added:", response.data);
 
-     items.unshift(newProduct);
-      alert("item added");
-      newitems.unshift(newProduct);
-}
-else{
-    alert("id already taken")
-}
+        // Update state with the new item
+        setNewitems([...newitems, newItem]);
+
+        // Clear the form after successful addition
+        clear();
+      } else {
+        alert("ID already taken");
+      }
+    } else {
+      alert("Enter all the fields");
     }
-    else{
-   alert("enter all the fields")
-    }
-  };
-  console.log(productId)
+  } catch (error) {
+    console.error("Error adding item:", error.message);
+    // Handle the error appropriately, e.g., show an error message to the user
+  }
+};
+
+  
+  
+
+
 function clear(){
     setProductId("");
     setProductName("");
@@ -58,8 +79,10 @@ function clear(){
     setProductImage("");
     setProductDescription("");
     setProductPrice("");
-     console.log(productId);
 }
+
+
+
   return (
     <div className="bodyy">
       <Adminnav/>
