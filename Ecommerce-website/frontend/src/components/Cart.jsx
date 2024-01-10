@@ -50,6 +50,7 @@ const Cart = () => {
 
     }
   }
+  
   return (
     <div className="bodyy">
       <div className="wish-nav">

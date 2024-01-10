@@ -53,6 +53,7 @@ const handleAddProduct = async () => {
 
         // Update state with the new item
         setNewitems([...newitems, newItem]);
+  
 
         // Clear the form after successful addition
         clear();
@@ -66,6 +67,7 @@ const handleAddProduct = async () => {
     console.error("Error adding item:", error.message);
     // Handle the error appropriately, e.g., show an error message to the user
   }
+  window.location.reload();
 };
 
   

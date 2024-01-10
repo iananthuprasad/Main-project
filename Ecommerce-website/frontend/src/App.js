@@ -1,7 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState,useEffect } from 'react';
+import axios from "axios"
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import Shop from './components/Shop';
-import { products } from './dataset/data';
 import {Mycontext} from './Context'
 import Men from './components/Men';
 import Navbar from './components/Navbar';
@@ -24,26 +24,44 @@ import Adminlogin from './components/Adminlogin';
 const App = () => {
 
 
-   const [items, setItems] = useState(products);
+  const [items, setItems] = useState([]);
+  console.log(items)
+
    const [newitems,setNewitems]=useState(newproducts)
    const [search, setSearch] = useState("");
  
    const[matcheditems,setMatcheditems]=useState([])
 
- const [wishlist,setWishlist]=useState([])
+  const [wishlist,setWishlist]=useState([])
   const [cartlist,setCartlist]=useState([])
   const [clickedButtons, setClickedButtons] = useState([]);
   const [id,setId]=useState("")
    const [formData, setFormData] = useState([])
    const[username,setUsername]=useState([])
      
+
+   
+       useEffect(() => {
+         // Axios GET request
+         axios
+           .get(`http://localhost:8000/api/products`)
+           .then((response) => {
+             // Handle the successful response
+             setItems(response.data);
+           })
+           .catch((error) => {
+             // Handle the error
+             console.error("Error fetching data:", error);
+           });
+       }, []);
+
+       
   
   return (
     <div>
       <BrowserRouter>
         <Mycontext.Provider
           value={{
-            products,
             items,
             setItems,
             search,

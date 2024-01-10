@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+
 import { Mycontext } from "../Context";
 import Navbar from "./Navbar";
 import { Card, Button } from "react-bootstrap";
@@ -14,6 +15,12 @@ const Men = (props) => {
   const { wishlist, setWishlist } = useContext(Mycontext);
   const { cartlist, setCartlist } = useContext(Mycontext);
   const { setId } = useContext(Mycontext);
+
+
+
+
+
+
 
   const wish = (item) => {
     if (wishlist.some((data) => item === data)) {

@@ -1,17 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Mycontext } from "../Context";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import Adminnav from "./Adminnav";
+import axios from 'axios';
 
 const Editproducts = () => {
   const { items, setItems } = useContext(Mycontext);
-  const [value, setValue] = useState(null);
-   const [value1, setValue1] = useState(null);
 
-  const [newname, setNewname] = useState("");
-  const [newprice, setNewprice] = useState("");
+  const [value, setValue] = useState(null);
+  const [value1, setValue1] = useState(null);
+
+
+  const [newName, setNewName] = useState("");
+  const [newPrice, setNewPrice] = useState("");
   const [newCategory, setNewCategory] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [search,setSearch]=useState("")
@@ -19,29 +22,52 @@ const Editproducts = () => {
   // Store initial values
   const [initialValues, setInitialValues] = useState({});
 
-  useEffect(() => {
-    // Save initial values when a new item is selected
-    if (value !== null) {
-      const selectedItem = items.find((item) => item.id === value);
-      if (selectedItem) {
-        setInitialValues({
-          name: selectedItem.name,
-          price: selectedItem.price,
-          category: selectedItem.category,
-          description: selectedItem.description,
-        });
-      }
-    }
-  }, [value, items]);
 
-  const removeProduct = (id) => {
-    const updatedItems = items.filter((item) => item.id !== id);
-    setItems(updatedItems);
+
+
+  const removeProduct = async (itemId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/api/products/${itemId}`
+      );
+      console.log(response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
-   const removeMatchedProduct = (id) => {
-     const updatedItems = items.filter((item) => item.id !== id);
-     setMatcheditems(updatedItems);
-   };
+
+
+    const removeMatchedProduct = async (itemId) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8000/api/products/${itemId}`
+        );
+        console.log(response.data);
+        window.location.reload();
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      }
+    };
+
+
+
+    useEffect(() => {
+      // Save initial values when a new item is selected
+      if (value !== null) {
+        const selectedItem = items.find((item) => item.id === value);
+        if (selectedItem) {
+          setInitialValues({
+            name: selectedItem.name,
+            price: selectedItem.price,
+            category: selectedItem.category,
+            description: selectedItem.description,
+          });
+        }
+      }
+    }, [value, items]);
+
+
 
   const valueset = (id) => {
     setValue(id);
@@ -49,45 +75,53 @@ const Editproducts = () => {
     // Reset values to initial values when a new item is selected
     const selectedItem = items.find((item) => item.id === id);
     if (selectedItem) {
-      setNewname(selectedItem.name);
-      setNewprice(selectedItem.price);
+      setNewName(selectedItem.name);
+      setNewPrice(selectedItem.price);
       setNewCategory(selectedItem.category);
       setNewDescription(selectedItem.description);
     }
   };
 
-  const update = (id) => {
-    // Check if any of the values have changed
-    const valuesChanged =
-      newname !== initialValues.name ||
-      newprice !== initialValues.price ||
-      newCategory !== initialValues.category ||
-      newDescription !== initialValues.description;
 
-    if (valuesChanged) {
-      // Perform update logic only if values have changed
-      const updatedData = items.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              name: newname,
-              price: newprice,
-              category: newCategory,
-              description: newDescription,
-            }
-          : item
-      );
-      setItems(updatedData);
-    }
 
-    // Reset values after updating
-    setNewname("");
-    setNewprice("");
-    setNewCategory("");
-    setNewDescription("");
-
-    setValue(null);
+function update(id) {
+  // Implement logic to update user information
+  const updatedUserData = {
+    name: newName,
+    category: newCategory,
+    price: newPrice,
+    description: newDescription,
   };
+
+  console.log(updatedUserData);
+
+  // Send a request to update user data
+  axios
+    .put(`http://localhost:8000/api/products/${id}`, updatedUserData)
+    .then((response) => {
+      console.log("User updated successfully:", response);
+      // Add any additional logic after a successful update
+    })
+    .catch((error) => {
+      console.error("Error updating user:", error);
+    });
+    setValue(null);
+    window.location.reload()
+}
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
 
 
    function searchitem() {
@@ -149,14 +183,14 @@ const Editproducts = () => {
                           <input
                             type="text"
                             defaultValue={item.name}
-                            onChange={(e) => setNewname(e.target.value)}
+                            onChange={(e) => setNewName(e.target.value)}
                           ></input>
                         </td>
                         <td>
                           <input
                             type="text"
                             defaultValue={item.price}
-                            onChange={(e) => setNewprice(e.target.value)}
+                            onChange={(e) => setNewPrice(e.target.value)}
                           ></input>
                         </td>
                         <td>
@@ -174,7 +208,7 @@ const Editproducts = () => {
                           ></input>
                         </td>
                         <td>
-                          <button onClick={() => update(item.id)}>
+                          <button onClick={() => update(item._id)}>
                             update
                           </button>
                         </td>
@@ -186,9 +220,9 @@ const Editproducts = () => {
                         <td>{item.category}</td>
                         <td>{item.description}</td>
                         <td onClick={() => valueset(item.id)}>
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon icon={faEdit} />
                         </td>
-                        <td onClick={() => removeMatchedProduct(item.id)}>
+                        <td onClick={() => removeMatchedProduct(item._id)}>
                           <FontAwesomeIcon icon={faTrash} />
                         </td>
                       </>
@@ -223,14 +257,14 @@ const Editproducts = () => {
                             <input
                               type="text"
                               defaultValue={item.name}
-                              onChange={(e) => setNewname(e.target.value)}
+                              onChange={(e) => setNewName(e.target.value)}
                             ></input>
                           </td>
                           <td>
                             <input
                               type="text"
                               defaultValue={item.price}
-                              onChange={(e) => setNewprice(e.target.value)}
+                              onChange={(e) => setNewPrice(e.target.value)}
                             ></input>
                           </td>
                           <td>
@@ -250,7 +284,7 @@ const Editproducts = () => {
                             ></input>
                           </td>
                           <td>
-                            <button onClick={() => update(item.id)}>
+                            <button onClick={() => update(item._id)}>
                               update
                             </button>
                           </td>
@@ -262,9 +296,9 @@ const Editproducts = () => {
                           <td>{item.category}</td>
                           <td>{item.description}</td>
                           <td onClick={() => valueset(item.id)}>
-                            <FontAwesomeIcon icon={faTrash} />
+                            <FontAwesomeIcon icon={faEdit} />
                           </td>
-                          <td onClick={() => removeProduct(item.id)}>
+                          <td onClick={() => removeProduct(item._id)}>
                             <FontAwesomeIcon icon={faTrash} />
                           </td>
                         </>

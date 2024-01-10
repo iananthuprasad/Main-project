@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+import React, { useContext,useEffect } from 'react'
+import axios from "axios";
 import Navbar from './Navbar'
 import Carousel from "react-bootstrap/Carousel";
 import '../styles/shop.css'
@@ -9,11 +10,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
 const Shop = () => {
+  const { items, setItems } = useContext(Mycontext);
   const {newitems,setNewitems}=useContext(Mycontext)
- const { wishlist, setWishlist } = useContext(Mycontext);
-const { id, setId } = useContext(Mycontext);
+  const { wishlist, setWishlist } = useContext(Mycontext);
+  const { id, setId } = useContext(Mycontext);
   const { cartlist, setCartlist } = useContext(Mycontext);
-    const { clickedButtons, setClickedButtons } = useContext(Mycontext);
+  const { clickedButtons, setClickedButtons } = useContext(Mycontext);
+  
+
+       useEffect(() => {
+         // Axios GET request
+         axios
+           .get(`http://localhost:8000/api/products`)
+           .then((response) => {
+             // Handle the successful response
+             setItems(response.data);
+           })
+           .catch((error) => {
+             // Handle the error
+             console.error("Error fetching data:", error);
+           });
+       }, []);
+
+
+
 
   const wish = (item) => {
     if (wishlist.some((data) => item == data)) {
