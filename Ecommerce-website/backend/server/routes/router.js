@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const render=require('../services/render')
 const controller=require('../controller/control')
+const usercontroller = require("../controller/userControl");
 
 // // Define your routes here
 // router.get("/", render.homeRoutes);   //services folder use cheyth inganemm cheyyamm
@@ -20,6 +21,10 @@ router.post("/api/products",controller.create);   // ivide controller folder use
 router.get("/api/products", controller.find); 
 router.put("/api/products/:id", controller.update); 
 router.delete("/api/products/:id", controller.delete); 
+
+router.post("/api/users", usercontroller.create); 
+router.get("/api/users", usercontroller.find); 
+
 
 
 
