@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { Mycontext } from "../Context";
 import Navbar from "./Navbar";
@@ -8,6 +8,7 @@ import { faHeart, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import Carousel from "react-bootstrap/Carousel";
 import { Link } from "react-router-dom";
 import "../styles/gender.css";
+import axios from "axios"
 
 const Men = (props) => {
   const { items, setItems } = useContext(Mycontext);
@@ -15,7 +16,7 @@ const Men = (props) => {
   const { wishlist, setWishlist } = useContext(Mycontext);
   const { cartlist, setCartlist } = useContext(Mycontext);
   const { setId } = useContext(Mycontext);
-
+  const [loading,setLoading]=useState("")
 
 
 
@@ -27,7 +28,35 @@ const Men = (props) => {
     } else {
       setWishlist((prevWishlist) => [...prevWishlist, item]);
     }
+    console.log(item)
   };
+
+  
+  // const wish = async (productId) => {
+  //   console.log(productId)
+  //   try {
+  //     setLoading(true);
+
+  //     // Make a request to add the product to the wishlist
+  //     const response = await axios.post(
+  //       `http://localhost:8000/api/users/wishlist`,
+  //       {productId}, // Request payload (if needed)
+  //       {
+  //         withCredentials: true, // Include credentials if using cookies for authentication
+  //       }
+  //     );
+
+  //     console.log(response.data);
+  //     // Handle the response accordingly (e.g., show a success message, update UI)
+  //   } catch (error) {
+  //     console.error("Error adding to wishlist:", error.response?.data || error.message);
+  //     // Handle the error (e.g., show an error message to the user)
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+
+
 
   const unlike = (id) => {
     const xyz = wishlist.filter((liked) => liked.id !== id);

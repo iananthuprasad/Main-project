@@ -25,7 +25,6 @@ const App = () => {
 
 
   const [items, setItems] = useState([]);
-  console.log(items)
 
    const [newitems,setNewitems]=useState(newproducts)
    const [search, setSearch] = useState("");
@@ -38,6 +37,8 @@ const App = () => {
   const [id,setId]=useState("")
    const [formData, setFormData] = useState([])
    const[username,setUsername]=useState([])
+    const [userToken, setUserToken] = useState(null);
+     const [password, setPassword] = useState("");
      
 
    
@@ -82,6 +83,10 @@ const App = () => {
             setNewitems,
             username,
             setUsername,
+            userToken,
+            setUserToken,
+            password,
+            setPassword
           }}
         >
           <Routes>

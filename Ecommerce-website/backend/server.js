@@ -5,6 +5,7 @@ const bodyparser = require("body-parser");
 //const path=require("path")
 const cors = require("cors");
 const connectDB = require("./server/database/db");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -12,7 +13,16 @@ dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8000;
 
 // Enable CORS for all routes
-app.use(cors());
+
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 //log reqest
@@ -20,6 +30,9 @@ app.use(morgan("tiny"));
 
 //mongodb connection
 connectDB();
+
+
+app.use(cookieParser());
 
 //parse req to body-parser
 app.use(bodyparser.urlencoded({ extended: true }));

@@ -3,30 +3,58 @@ import React, { useState,useContext } from "react";
 import { Mycontext } from "../Context";
 import { useNavigate } from "react-router-dom";
 import '../styles/register.css'
+import axios from "axios";
 
 const Userlogin = () => {
  
 
-  const{username,setUsername}=useContext(Mycontext)
-  const[password,setPassword]=useState("")
-
-  const { formData, setFormData } = useContext(Mycontext);
+  const { username, setUsername, userToken, setUserToken,password,setPassword,formData,setFormData } =useContext(Mycontext);
+ 
   const nav=useNavigate();
 
  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-       const abc = formData.find((item) => item.username === username && item.password===password);
-  if(abc){
-    alert("login successful")
-    nav("/")
-   
-  }
-  else{
-    alert("invalid username or password")
-  } 
+
+    try {
+      if (!username || !password) {
+        alert("Username and password are required");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://localhost:8000/api/users/login",
+        {
+          username,
+          password,
+        },
+        {
+          withCredentials: true, // Include credentials if using cookies for authentication
+        }
+      );
+
+      const data = response.data;
+      console.log(response.data);
+      console.log("token in frontEnd", data.token);
+      console.log("Login successful", data.message);
+      setUserToken(data.token);
+      alert("Login Success!!!!");
+      nav("/");
+    } catch (error) {
+      console.error("Login error:", error);
+
+      if (error.response) {
+        // The request was made and the server responded with an error status
+        console.error("Server response:", error.response.data);
+      }
+
+      alert("Login failed!!!");
+    }
   };
+
+
+
 
   return (
     <div className="bodyyy">
@@ -46,8 +74,6 @@ const Userlogin = () => {
 
         <input
           type="password"
-         
-      
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />

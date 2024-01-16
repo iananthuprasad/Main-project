@@ -1,36 +1,39 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 const Userdb = require("../model/usermodel");
 
-exports.create = (req, res) => {
-  //validation request
-  if (!req.body) {
-    res.status(400).send({ message: "content can not be empty" });
+
+
+
+exports.userRegister = async (req, res) => {
+  try {
+    const { username, email, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      return res.status(400).send("Passwords do not match");
+    }
+
+    const userExists = await Userdb.findOne({ username }); // Check if user already exists
+    if (userExists) {
+      return res.status(400).send("User already exists");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new Userdb({ username, email, password: hashedPassword });
+    await user.save();
+    res.status(201).send("User registered successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Registration failed");
   }
-
-  //new user
-  const user = new Userdb({
-    username: req.body.username,
-    password: req.body.password,
-    wishlist: req.body.wishlist,
-    cart: req.body.cart,
-  });
-
-  //save user in the databse
-
-  user
-    .save(user)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "some error occured while creating a create opertion",
-      });
-    });
 };
 
 
-exports.find = (req, res) => {
+
+
+
+exports.getUser = (req, res) => {
   if (req.query.id) {
     const id = req.query.id;
 
@@ -58,5 +61,115 @@ exports.find = (req, res) => {
               err.message || "error occured while retriving user information",
           });
       });
+  }
+};
+
+
+
+
+// Login
+exports.userLogin = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await Userdb.findOne({ username });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const token = jwt.sign(
+        { username: user.username },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1hr",
+        }
+      );
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60,
+      });
+      res.setHeader("Authorization", token);
+      console.log(token, "requested token");
+
+      res.status(200).json({ message: "welcome user", token });
+    } else {
+      res.status(401).send("Invalid username or password");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Login failed");
+  }
+};
+
+
+exports.getLogin = (req, res) => {
+  if (req.query.id) {
+    const id = req.query.id;
+
+    Userdb.findById(id)
+      .then((data) => {
+        if (!data) {
+          res.status(404).send({ message: "not found with id" + id });
+        } else {
+          res.send(data);
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({ message: "error retriving user with id" + id });
+      });
+  } else {
+    Userdb.find()
+      .then((user) => {
+        res.send(user);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "error occured while retriving user information",
+        });
+      });
+  }
+};
+
+
+exports.addToWish = async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    // Fetch the product by its ID using productDatas.findById
+    const product = await productDatas.findById(productId);
+
+    // If the product is not found, return a 404 response
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Retrieve the token from the request cookies
+    const token = req.cookies.token;
+
+    // Verify the token and decode the payload
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Find the user by their username in the database
+    const user = await Userdb.findOne({ username: decoded.username });
+
+    // Add the product to the user's wishlist
+    user.wishlist.push(productId);
+
+    // Save the updated user object with the new wishlist
+    await user.save();
+
+    // Populate the 'wish' field of the user object before sending the response
+    const updatedUser = await Userdb.findById(user._id).populate("wish");
+
+    // Send a 200 response with a success message and the updated user object
+    res.status(200).json({
+      message: "Product added to wish successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error(err);
+
+    // If there's an error, send a 500 response with an error message
+    res.status(500).json({ error: "Server error", message: err.message });
   }
 };
