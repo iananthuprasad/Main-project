@@ -30,9 +30,10 @@ router.get("/api/users/register", usercontroller.getUser);
 
 
 router.post("/api/users/login", usercontroller.userLogin, userMiddleware); 
-router.get("/api/users/login", usercontroller.getLogin, userMiddleware); 
+
 
 router.post("/api/users/wish", userMiddleware, usercontroller.addToWish);
+
 
 
 

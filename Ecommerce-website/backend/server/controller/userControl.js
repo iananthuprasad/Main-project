@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const Userdb = require("../model/usermodel");
 
-
+const productDatas = require("../model/model")
 
 
 exports.userRegister = async (req, res) => {
@@ -73,6 +73,8 @@ exports.userLogin = async (req, res) => {
     const { username, password } = req.body;
     const user = await Userdb.findOne({ username });
 
+    console.log("user=",user)
+
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign(
         { username: user.username },
@@ -82,13 +84,16 @@ exports.userLogin = async (req, res) => {
         }
       );
 
+
       res.cookie("token", token, {
         httpOnly: true,
         secure: true,
         maxAge: 1000 * 60 * 60,
       });
+
+
       res.setHeader("Authorization", token);
-      console.log(token, "requested token");
+      console.log( "requested token=",token);
 
       res.status(200).json({ message: "welcome user", token });
     } else {
@@ -101,50 +106,28 @@ exports.userLogin = async (req, res) => {
 };
 
 
-exports.getLogin = (req, res) => {
-  if (req.query.id) {
-    const id = req.query.id;
 
-    Userdb.findById(id)
-      .then((data) => {
-        if (!data) {
-          res.status(404).send({ message: "not found with id" + id });
-        } else {
-          res.send(data);
-        }
-      })
-      .catch((err) => {
-        res.status(500).send({ message: "error retriving user with id" + id });
-      });
-  } else {
-    Userdb.find()
-      .then((user) => {
-        res.send(user);
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message || "error occured while retriving user information",
-        });
-      });
-  }
-};
 
 
 exports.addToWish = async (req, res) => {
   try {
-    const productId = req.params.id;
+    const productId = req.body.id;
+
+    console.log(productId)
 
     // Fetch the product by its ID using productDatas.findById
     const product = await productDatas.findById(productId);
+    console.log(product)
 
     // If the product is not found, return a 404 response
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({ message: "Product not foundddd" });
     }
 
     // Retrieve the token from the request cookies
     const token = req.cookies.token;
+
+    console.log("token=",token)
 
     // Verify the token and decode the payload
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -152,14 +135,20 @@ exports.addToWish = async (req, res) => {
     // Find the user by their username in the database
     const user = await Userdb.findOne({ username: decoded.username });
 
+    if (user.wishlist.includes(productId)) {
+      return res
+        .status(400)
+        .json({ message: "product is already in wishlist" });
+    }
+
+    // Populate the 'wish' field of the user object before sending the response
+    const updatedUser = await Userdb.findById(user._id).populate('wish');
+
     // Add the product to the user's wishlist
     user.wishlist.push(productId);
 
     // Save the updated user object with the new wishlist
     await user.save();
-
-    // Populate the 'wish' field of the user object before sending the response
-    const updatedUser = await Userdb.findById(user._id).populate("wish");
 
     // Send a 200 response with a success message and the updated user object
     res.status(200).json({
@@ -173,3 +162,5 @@ exports.addToWish = async (req, res) => {
     res.status(500).json({ error: "Server error", message: err.message });
   }
 };
+
+

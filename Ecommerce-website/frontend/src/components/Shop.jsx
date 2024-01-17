@@ -134,14 +134,14 @@ const Shop = () => {
           {newitems.map((item, id) => (
             <>
               <Card className="card-size">
-                <Link to="/itemdetails" onClick={() => listDetails(item.id)}>
+               
                   <Card.Img
                     variant="top"
                     src={item.image}
                     alt={item.name}
                     className="cardimg"
                   />
-                </Link>
+                
                 <Card.Body className="cardbody">
                   <Card.Title>{item.name}</Card.Title>
                   <Card.Text>{item.description}</Card.Text>

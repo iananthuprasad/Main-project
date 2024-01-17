@@ -21,7 +21,7 @@ const Navbar = () => {
   const [menu, setMenu] = useState("shop");
 
  const nav=useNavigate();
- console.log(menu)
+
 
   
 

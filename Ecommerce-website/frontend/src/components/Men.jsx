@@ -39,8 +39,8 @@ const Men = (props) => {
 
   //     // Make a request to add the product to the wishlist
   //     const response = await axios.post(
-  //       `http://localhost:8000/api/users/wishlist`,
-  //       {productId}, // Request payload (if needed)
+  //       `http://localhost:8000/api/users/wish${productId}`,
+  //       {}, // Request payload (if needed)
   //       {
   //         withCredentials: true, // Include credentials if using cookies for authentication
   //       }
