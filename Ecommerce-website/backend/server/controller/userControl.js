@@ -142,7 +142,7 @@ exports.addToWish = async (req, res) => {
     }
 
     // Populate the 'wish' field of the user object before sending the response
-    const updatedUser = await Userdb.findById(user._id).populate('wish');
+    const updatedUser = await Userdb.findById(user._id).populate('wishlist');
 
     // Add the product to the user's wishlist
     user.wishlist.push(productId);
@@ -160,6 +160,37 @@ exports.addToWish = async (req, res) => {
 
     // If there's an error, send a 500 response with an error message
     res.status(500).json({ error: "Server error", message: err.message });
+  }
+};
+
+
+exports.getWish = (req, res) => {
+  if (req.query.id) {
+    const id = req.query.id;
+    console.log(id)
+
+    Userdb.findById(id)
+      .then((data) => {
+        if (!data) {
+          res.status(404).send({ message: "not found with id" + id });
+        } else {
+          res.send(data);
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({ message: "error retriving user with id" + id });
+      });
+  } else {
+    Userdb.find()
+      .then((user) => {
+        res.send(user);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "error occured while retriving user information",
+        });
+      });
   }
 };
 

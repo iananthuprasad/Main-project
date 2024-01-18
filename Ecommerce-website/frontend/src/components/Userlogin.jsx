@@ -8,7 +8,7 @@ import axios from "axios";
 const Userlogin = () => {
  
 
-  const { username, setUsername, userToken, setUserToken,password,setPassword,formData,setFormData } =useContext(Mycontext);
+  const { username, setUsername, userToken, setUserToken,password,setPassword,formData,setFormData,alluser,setAlluser ,wishid,setWishid} =useContext(Mycontext);
  
   const nav=useNavigate();
 
@@ -33,6 +33,16 @@ const Userlogin = () => {
           withCredentials: true, // Include credentials if using cookies for authentication
         }
       );
+
+
+      const userone=alluser.filter((data)=>
+      data.username===username
+      )
+      
+      console.log("user=",userone)
+      
+      setWishid(userone[0].wishlist);
+      console.log("wishid=",wishid)
 
       const data = response.data;
       console.log(response.data);

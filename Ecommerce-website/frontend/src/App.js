@@ -35,10 +35,16 @@ const App = () => {
   const [cartlist,setCartlist]=useState([])
   const [clickedButtons, setClickedButtons] = useState([]);
   const [id,setId]=useState("")
-   const [formData, setFormData] = useState([])
-   const[username,setUsername]=useState([])
-    const [userToken, setUserToken] = useState(null);
-     const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState([])
+  const [username,setUsername]=useState([])
+  const [userToken, setUserToken] = useState(null);
+  const [password, setPassword] = useState("");
+
+  const [alluser,setAlluser]=useState([])
+  const [wishid,setWishid]=useState([])
+
+
+ 
      
 
    
@@ -56,6 +62,30 @@ const App = () => {
            });
        }, []);
 
+
+        // useEffect(() => {
+        //   // Axios GET request
+        //   axios
+        //     .get(`http://localhost:8000/api/users/wish`)
+        //     .then((response) => {
+        //       // Handle the successful response
+        //       console.log(response.data);
+        //       setAlluser(response.data)
+
+        //       let selectedProducts = items.filter(product => wishid.includes(product._id));
+        //       console.log(selectedProducts)
+        //       setWishlist(selectedProducts)
+        //       console.log(wishlist);
+
+        //     })
+        //     .catch((error) => {
+        //       // Handle the error
+        //       console.error("Error fetching data:", error);
+        //     });
+        // }, []);
+
+        
+         
        
   
   return (
@@ -86,7 +116,11 @@ const App = () => {
             userToken,
             setUserToken,
             password,
-            setPassword
+            setPassword,
+            alluser,
+            setAlluser,
+            wishid,
+            setWishid,
           }}
         >
           <Routes>

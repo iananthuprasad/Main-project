@@ -23,38 +23,40 @@ const Men = (props) => {
 
 
 
-  const wish = (item) => {
-    if (wishlist.some((data) => item === data)) {
-    } else {
-      setWishlist((prevWishlist) => [...prevWishlist, item]);
-    }
-    console.log(item)
-  };
+  // const wish = (item) => {
+  //   if (wishlist.some((data) => item === data)) {
+  //   } else {
+  //     setWishlist((prevWishlist) => [...prevWishlist, item]);
+  //   }
+  //   console.log(item)
+  // };
 
   
-  // const wish = async (productId) => {
-  //   console.log(productId)
-  //   try {
-  //     setLoading(true);
+  const wish = async (productId) => {
+    console.log(productId)
+    try {
+      setLoading(true);
 
-  //     // Make a request to add the product to the wishlist
-  //     const response = await axios.post(
-  //       `http://localhost:8000/api/users/wish${productId}`,
-  //       {}, // Request payload (if needed)
-  //       {
-  //         withCredentials: true, // Include credentials if using cookies for authentication
-  //       }
-  //     );
+      // Make a request to add the product to the wishlist
+      const response = await axios.post(
+        `http://localhost:8000/api/users/wish`,
+        {id:productId}, // Request payload (if needed)
+        {
+          withCredentials: true, // Include credentials if using cookies for authentication
+        }
+      );
 
-  //     console.log(response.data);
-  //     // Handle the response accordingly (e.g., show a success message, update UI)
-  //   } catch (error) {
-  //     console.error("Error adding to wishlist:", error.response?.data || error.message);
-  //     // Handle the error (e.g., show an error message to the user)
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+      console.log(response.data);
+      // Handle the response accordingly (e.g., show a success message, update UI)
+    } catch (error) {
+      console.error("Error adding to wishlist:", error.response?.data || error.message);
+      // Handle the error (e.g., show an error message to the user)
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
 
 
 
@@ -105,7 +107,7 @@ const Men = (props) => {
                           <Card.Text>{matcheditem.description}</Card.Text>
                           <Card.Text>Price: ${matcheditem.price}</Card.Text>
 
-                          <Button onClick={() => wish(matcheditem)}>
+                          <Button onClick={() => wish(matcheditem._id)}>
                             <FontAwesomeIcon icon={faHeart} />
                             <span className="cart-icon">wishlist</span>
                           </Button>
@@ -192,7 +194,7 @@ const Men = (props) => {
                         <Card.Title>{item.name}</Card.Title>
                         <Card.Text>{item.description}</Card.Text>
                         <Card.Text>Price: ${item.price}</Card.Text>
-                        <Button onClick={() => wish(item)}>
+                        <Button onClick={() => wish(item._id)}>
                           <FontAwesomeIcon icon={faHeart} />
                           <span className="cart-icon">wishlist</span>
                         </Button>

@@ -1,4 +1,4 @@
-import React,{useContext, useState} from 'react'
+import React,{useContext, useState,useEffect} from 'react'
 import '../styles/wish.css'
 import { Mycontext } from "../Context";
 import { Card, Button } from "react-bootstrap";
@@ -10,11 +10,43 @@ import {
   faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
+import axios from 'axios'
+
+
 
 const Wish = () => {
       const{cartlist,setCartlist}=useContext(Mycontext);
       const { wishlist, setWishlist } = useContext(Mycontext);
        const { clickedButtons, setClickedButtons } = useContext(Mycontext);
+
+       const { alluser, setAlluser, items, wishid } = useContext(Mycontext);
+
+
+
+     useEffect(() => {
+       // Axios GET request
+       axios
+         .get(`http://localhost:8000/api/users/wish`)
+         .then((response) => {
+           // Handle the successful response
+           console.log(response.data);
+           setAlluser(response.data);
+
+           let selectedProducts = items.filter((product) =>
+             wishid.includes(product._id)
+           );
+           console.log("selectedproducts",selectedProducts);
+           setWishlist(selectedProducts);
+           console.log("wishlist=",wishlist);
+         })
+         .catch((error) => {
+           // Handle the error
+           console.error("Error fetching data:", error);
+         });
+     }, []);
+
+
+
 
       const unlike = (id) => {
         const xyz = wishlist.filter((liked) => liked.id !== id);
@@ -41,8 +73,10 @@ const Wish = () => {
      };
 
 
+   
+
       
- console.log("wish=",cartlist);
+ 
 
   return (
     <div className="bodyy">
