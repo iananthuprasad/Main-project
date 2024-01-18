@@ -63,26 +63,26 @@ const App = () => {
        }, []);
 
 
-        // useEffect(() => {
-        //   // Axios GET request
-        //   axios
-        //     .get(`http://localhost:8000/api/users/wish`)
-        //     .then((response) => {
-        //       // Handle the successful response
-        //       console.log(response.data);
-        //       setAlluser(response.data)
+        useEffect(() => {
+          // Axios GET request
+          axios
+            .get(`http://localhost:8000/api/users/wish`)
+            .then((response) => {
+              // Handle the successful response
+              console.log(response.data);
+              setAlluser(response.data)
 
-        //       let selectedProducts = items.filter(product => wishid.includes(product._id));
-        //       console.log(selectedProducts)
-        //       setWishlist(selectedProducts)
-        //       console.log(wishlist);
+              let selectedProducts = items.filter(product => wishid.includes(product._id));
+              console.log(selectedProducts)
+              setWishlist(selectedProducts)
+              console.log(wishlist);
 
-        //     })
-        //     .catch((error) => {
-        //       // Handle the error
-        //       console.error("Error fetching data:", error);
-        //     });
-        // }, []);
+            })
+            .catch((error) => {
+              // Handle the error
+              console.error("Error fetching data:", error);
+            });
+        }, []);
 
         
          
