@@ -13,7 +13,6 @@ const Userlogin = () => {
  
   const nav=useNavigate();
   const sessionid=Getuserid()
-  console.log("sessionid=",sessionid)
 
  
 
@@ -38,15 +37,9 @@ const Userlogin = () => {
       );
 
 
-      const userone=alluser.filter((data)=>
-      data._id===sessionid
-      )
+    
       
-      console.log("alluser",alluser)
-      console.log("user=",userone)
-      
-      setWishid(userone[0].wishlist);
-      console.log("wishid=",wishid)
+     
 
       const data = response.data;
       console.log(response.data);

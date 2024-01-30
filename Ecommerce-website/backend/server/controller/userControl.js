@@ -252,3 +252,40 @@ exports.fetchWish = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+
+exports.delwish = async (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+
+    // Verify the token and decode the payload
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Find the user by their username in the database
+    const user = await Userdb.findOne({ username: decoded.username });
+
+    const itemIdToDelete = req.body.id;
+
+    // Check if the item exists in the wishlist
+    const itemIndex = user.wishlist.indexOf(itemIdToDelete);
+
+    if (itemIndex !== -1) {
+      // Item found, remove it from the wishlist
+      user.wishlist.splice(itemIndex, 1);
+
+      // Save the updated user object to the database
+      await user.save();
+
+      // Respond with the updated user object
+      res.json(user);
+    } else {
+      // Item not found in the wishlist
+      res.status(404).json({ error: "Item not found in the wishlist" });
+    }
+  } catch (error) {
+    // Pass the error to the next middleware (error handler)
+    next(error);
+  }
+};
+

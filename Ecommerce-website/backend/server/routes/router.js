@@ -5,6 +5,7 @@ const controller=require('../controller/control')
 const usercontroller = require("../controller/userControl");
 const userMiddleware = require("../middileware/userMiddileware"); 
 
+
 // // Define your routes here
 // router.get("/", render.homeRoutes);   //services folder use cheyth inganemm cheyyamm
 
@@ -37,6 +38,8 @@ router.get("/api/users/wish",  usercontroller.getWish);
 
 
 router.get("/api/users/fetchwish", usercontroller.fetchWish)
+
+router.post("/api/users/delwish", userMiddleware, usercontroller.delwish);
 
 
 

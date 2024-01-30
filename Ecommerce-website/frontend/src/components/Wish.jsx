@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import Getuserid from "./sessionid";
 
 
 
@@ -18,39 +19,67 @@ const Wish = () => {
       const {cartlist,setCartlist}=useContext(Mycontext);
       const { wishlist, setWishlist } = useContext(Mycontext);
       const { clickedButtons, setClickedButtons } = useContext(Mycontext);
-      const { alluser, setAlluser, items, wishid } = useContext(Mycontext);
+      const [loading, setLoading] = useState("");
+   
+
+      const id = Getuserid();
 
 
 
-     useEffect(() => {
-       // Axios GET request
-       axios
-         .get(`http://localhost:8000/api/users/wish`)
-         .then((response) => {
-           // Handle the successful response
-           console.log(response.data);
-           setAlluser(response.data);
+    useEffect(()=>{
+      fetchwish();
+    },[]
+    )
 
-           let selectedProducts = items.filter((product) =>
-             wishid.includes(product._id)
+
+    const fetchwish=async()=>{
+      try{
+        const response = await axios.get(
+          `http://localhost:8000/api/users/fetchwish?id=${id}`
+        );
+        setWishlist(response.data.products)
+        console.log("wish=",response.data.products)
+        console.log("wishh=", wishlist);
+      }
+      catch{
+console.log("error")
+      }
+    }
+
+
+
+
+      // const unlike = (id) => {
+      //   const xyz = wishlist.filter((liked) => liked.id !== id);
+      //   setWishlist(xyz);
+      // };
+
+       const unlike = async (productId) => {
+         console.log(productId);
+         try {
+           setLoading(true);
+
+           // Make a request to add the product to the wishlist
+           const response = await axios.post(
+             `http://localhost:8000/api/users/delwish`,
+             { id: productId }, // Request payload (if needed)
+             {
+               withCredentials: true, // Include credentials if using cookies for authentication
+             }
            );
-           console.log("selectedproducts",selectedProducts);
-           setWishlist(selectedProducts);
-           console.log("wishlist=",wishlist);
-         })
-         .catch((error) => {
-           // Handle the error
-           console.error("Error fetching data:", error);
-         });
-     }, []);
 
-
-
-
-      const unlike = (id) => {
-        const xyz = wishlist.filter((liked) => liked.id !== id);
-        setWishlist(xyz);
-      };
+           console.log("data=",response.data);
+           // Handle the response accordingly (e.g., show a success message, update UI)
+         } catch (error) {
+           console.error(
+             "Error adding to wishlist:"  
+           );
+           // Handle the error (e.g., show an error message to the user)
+         } finally {
+           setLoading(false);
+         }
+         window.location.reload();
+       };
 
 
 
@@ -123,7 +152,7 @@ const Wish = () => {
                       <Card.Title>{wish.name}</Card.Title>
                       <Card.Text>{wish.description}</Card.Text>
                       <Card.Text>Price: ${wish.price}</Card.Text>
-                      <Button variant="primary" onClick={() => unlike(wish.id)}>
+                      <Button variant="primary" onClick={() => unlike(wish._id)}>
                         Remove
                       </Button>
                       <Button

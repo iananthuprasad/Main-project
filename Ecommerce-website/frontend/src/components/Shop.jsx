@@ -63,30 +63,19 @@ const Shop = () => {
 
 
 
-         useEffect(() => {
-           // Axios GET request
-           axios
-             .get(`http://localhost:8000/api/users/wish`)
-             .then((response) => {
-               // Handle the successful response
-               console.log("data", response.data);
-               console.log("items=", items);
-
-               setAlluser(response.data);
-               console.log("wishid=", wishid);
-
-               let selectedProducts = items.filter((product) =>
-                 wishid.includes(product._id)
-               );
-               console.log("selectedproducts=", selectedProducts);
-               setWishlist(selectedProducts);
-               console.log(wishlist);
-             })
-             .catch((error) => {
-               // Handle the error
-               console.error("Error fetching data:", error);
-             });
-         }, []);
+          useEffect(() => {
+            // Axios GET request
+            axios
+              .get(`http://localhost:8000/api/products`)
+              .then((response) => {
+                // Handle the successful response
+                setItems(response.data);
+              })
+              .catch((error) => {
+                // Handle the error
+                console.error("Error fetching data:", error);
+              });
+          }, []);
 
 
 

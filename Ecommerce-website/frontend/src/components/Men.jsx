@@ -31,6 +31,9 @@ const Men = (props) => {
   //   console.log(item)
   // };
 
+  console.log(items)
+  console.log(wishlist)
+
   
   const wish = async (productId) => {
     console.log(productId)
@@ -46,7 +49,8 @@ const Men = (props) => {
         }
       );
 
-      console.log(response.data);
+      console.log("data=",response.data);
+
       // Handle the response accordingly (e.g., show a success message, update UI)
     } catch (error) {
       console.error("Error adding to wishlist:", error.response?.data || error.message);
