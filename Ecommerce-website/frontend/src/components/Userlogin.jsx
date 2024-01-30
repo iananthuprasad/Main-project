@@ -4,6 +4,7 @@ import { Mycontext } from "../Context";
 import { useNavigate } from "react-router-dom";
 import '../styles/register.css'
 import axios from "axios";
+import Getuserid from "./sessionid";
 
 const Userlogin = () => {
  
@@ -11,6 +12,8 @@ const Userlogin = () => {
   const { username, setUsername, userToken, setUserToken,password,setPassword,formData,setFormData,alluser,setAlluser ,wishid,setWishid} =useContext(Mycontext);
  
   const nav=useNavigate();
+  const sessionid=Getuserid()
+  console.log("sessionid=",sessionid)
 
  
 
@@ -36,9 +39,10 @@ const Userlogin = () => {
 
 
       const userone=alluser.filter((data)=>
-      data.username===username
+      data._id===sessionid
       )
       
+      console.log("alluser",alluser)
       console.log("user=",userone)
       
       setWishid(userone[0].wishlist);
@@ -47,10 +51,18 @@ const Userlogin = () => {
       const data = response.data;
       console.log(response.data);
       console.log("token in frontEnd", data.token);
+       console.log("user id", data.UserID);
       console.log("Login successful", data.message);
       setUserToken(data.token);
       alert("Login Success!!!!");
       nav("/");
+      
+
+        sessionStorage.setItem('usertoken',data.token)
+        sessionStorage.setItem("userid", data.UserID);
+
+
+
     } catch (error) {
       console.error("Login error:", error);
 

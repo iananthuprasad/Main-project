@@ -95,7 +95,7 @@ exports.userLogin = async (req, res) => {
       res.setHeader("Authorization", token);
       console.log( "requested token=",token);
 
-      res.status(200).json({ message: "welcome user", token });
+      res.status(200).json({ message: "welcome user", token ,UserID:user._id });
     } else {
       res.status(401).send("Invalid username or password");
     }
@@ -164,34 +164,91 @@ exports.addToWish = async (req, res) => {
 };
 
 
-exports.getWish = (req, res) => {
-  if (req.query.id) {
-    const id = req.query.id;
-    console.log(id)
 
-    Userdb.findById(id)
-      .then((data) => {
-        if (!data) {
-          res.status(404).send({ message: "not found with id" + id });
-        } else {
-          res.send(data);
-        }
-      })
-      .catch((err) => {
-        res.status(500).send({ message: "error retriving user with id" + id });
-      });
-  } else {
-    Userdb.find()
-      .then((user) => {
-        res.send(user);
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message || "error occured while retriving user information",
-        });
-      });
+
+// exports.getWish = (req, res) => {
+//   if (req.query.id) {
+//     const id = req.query.id;
+//     console.log(id)
+
+//     Userdb.findById(id)
+//       .then((data) => {
+//         if (!data) {
+//           res.status(404).send({ message: "not found with id" + id });
+//         } else {
+//           res.send(data);
+//         }
+//       })
+//       .catch((err) => {
+//         res.status(500).send({ message: "error retriving user with id" + id });
+//       });
+//   } else {
+//     Userdb.find()
+//       .then((user) => {
+//         res.send(user);
+//       })
+//       .catch((err) => {
+//         res.status(500).send({
+//           message:
+//             err.message || "error occured while retriving user information",
+//         });
+//       });
+//   }
+// };
+
+
+exports.getWish=async(res,req)=>{
+  try{
+    const user=await productDatas.find({})
+    res.json(user)
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
+
+
+// exports.fetchWish=async(req,res)=>{
+//   try{
+// const user=await Userdb.findById(req.body.sessionid)
+
+// const products=await Userdb.find(
+//   {
+//     _id: {$in: user.wishlist}
+//   }
+// )
+// res.json({products})
+// console.log("products=",products)
+//   }
+//   catch(error){
+//     res.json(error)
+//   }
+// }
+
+exports.fetchWish = async (req, res) => {
+  try {
+    // Assuming Userdb is correctly defined/imported
+
+    // Validate session ID
+    const userId = req.query.id;
+    console.log(userId)
+    if (!userId) {
+      res.status(400).json({ error: "Invalid session ID" });
+      return;
+    }
+
+    const user = await Userdb.findById(userId);
+    console.log(user)
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    const products = await productDatas.find({ _id: { $in: user.wishlist } });
+    res.json({ products });
+    console.log("products =", products);
+  } catch (error) {
+    console.error(error); // Log the error
+    res.status(500).json({ error: "Internal server error" });
   }
 };
-
-

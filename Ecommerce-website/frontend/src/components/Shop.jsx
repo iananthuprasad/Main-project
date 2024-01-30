@@ -15,7 +15,9 @@ const Shop = () => {
   const { wishlist, setWishlist } = useContext(Mycontext);
   const { id, setId } = useContext(Mycontext);
   const { cartlist, setCartlist } = useContext(Mycontext);
-  const { clickedButtons, setClickedButtons } = useContext(Mycontext);
+  const { clickedButtons, setClickedButtons,wishid,alluser,setAlluser } = useContext(Mycontext);
+
+  
   
 
        useEffect(() => {
@@ -31,6 +33,60 @@ const Shop = () => {
              console.error("Error fetching data:", error);
            });
        }, []);
+       console.log("items=",items)
+
+
+        // useEffect(() => {
+        //   // Axios GET request
+        //   axios
+        //     .get(`http://localhost:8000/api/users/wish`)
+        //     .then((response) => {
+        //       // Handle the successful response
+        //       console.log(response.data);
+
+        //       setAlluser(response.data);
+
+        //       let selectedProducts = items.filter((product) =>
+        //         wishid.includes(product._id)
+        //       );
+        //       console.log(selectedProducts);
+        //       setWishlist(selectedProducts);
+        //       console.log(wishlist);
+        //     })
+        //     .catch((error) => {
+        //       // Handle the error
+        //       console.error("Error fetching data:", error);
+        //     });
+        // }, []);
+
+        // console.log("alluser=",alluser)
+
+
+
+         useEffect(() => {
+           // Axios GET request
+           axios
+             .get(`http://localhost:8000/api/users/wish`)
+             .then((response) => {
+               // Handle the successful response
+               console.log("data", response.data);
+               console.log("items=", items);
+
+               setAlluser(response.data);
+               console.log("wishid=", wishid);
+
+               let selectedProducts = items.filter((product) =>
+                 wishid.includes(product._id)
+               );
+               console.log("selectedproducts=", selectedProducts);
+               setWishlist(selectedProducts);
+               console.log(wishlist);
+             })
+             .catch((error) => {
+               // Handle the error
+               console.error("Error fetching data:", error);
+             });
+         }, []);
 
 
 

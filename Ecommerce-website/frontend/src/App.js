@@ -20,6 +20,7 @@ import Edituser from './components/Edituser';
 import { newproducts } from './dataset/new';
 import UserDetails from './components/UserDetails';
 import Adminlogin from './components/Adminlogin';
+import Getuserid from './components/sessionid';
 
 const App = () => {
 
@@ -63,26 +64,7 @@ const App = () => {
        }, []);
 
 
-        useEffect(() => {
-          // Axios GET request
-          axios
-            .get(`http://localhost:8000/api/users/wish`)
-            .then((response) => {
-              // Handle the successful response
-              console.log(response.data);
-              setAlluser(response.data)
-
-              let selectedProducts = items.filter(product => wishid.includes(product._id));
-              console.log(selectedProducts)
-              setWishlist(selectedProducts)
-              console.log(wishlist);
-
-            })
-            .catch((error) => {
-              // Handle the error
-              console.error("Error fetching data:", error);
-            });
-        }, []);
+        
 
         
          
@@ -142,6 +124,7 @@ const App = () => {
             <Route path="/edituser" element={<Edituser />} />
             <Route path="/userdetails" element={<UserDetails />} />
             <Route path="/admin" element={<Adminlogin />} />
+            <Route path="/session" element={<Getuserid />} />
           </Routes>
         </Mycontext.Provider>
       </BrowserRouter>

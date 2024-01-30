@@ -11,6 +11,7 @@ import {
   faSignInAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { Mycontext } from "../Context";
+import Getuserid from "./sessionid";
 
 const Navbar = () => {
   const{items,setItems}=useContext(Mycontext)
@@ -21,6 +22,7 @@ const Navbar = () => {
   const [menu, setMenu] = useState("shop");
 
  const nav=useNavigate();
+ const sessionid=Getuserid
 
 
   
@@ -44,7 +46,7 @@ const Navbar = () => {
     nav("/userdetails")
   }
  }
-
+console.log(sessionid())
 
   return (
     <div className="body">
@@ -124,7 +126,7 @@ const Navbar = () => {
                 <Link to="/register">
                   <FontAwesomeIcon icon={faSignInAlt} />
                   <span className="shop-nav-icon">
-                    {username == "" ? <>Login</> : <>Logout</>}
+                    {sessionid() == null ? <>Login</> : <>Logout</>}
                   </span>
                 </Link>
               </li>

@@ -33,8 +33,10 @@ router.post("/api/users/login", usercontroller.userLogin, userMiddleware);
 
 
 router.post("/api/users/wish", userMiddleware, usercontroller.addToWish);
-router.get("/api/users/wish/",  usercontroller.getWish);
+router.get("/api/users/wish",  usercontroller.getWish);
 
+
+router.get("/api/users/fetchwish", usercontroller.fetchWish)
 
 
 

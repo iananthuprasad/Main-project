@@ -15,11 +15,10 @@ import axios from 'axios'
 
 
 const Wish = () => {
-      const{cartlist,setCartlist}=useContext(Mycontext);
+      const {cartlist,setCartlist}=useContext(Mycontext);
       const { wishlist, setWishlist } = useContext(Mycontext);
-       const { clickedButtons, setClickedButtons } = useContext(Mycontext);
-
-       const { alluser, setAlluser, items, wishid } = useContext(Mycontext);
+      const { clickedButtons, setClickedButtons } = useContext(Mycontext);
+      const { alluser, setAlluser, items, wishid } = useContext(Mycontext);
 
 
 
