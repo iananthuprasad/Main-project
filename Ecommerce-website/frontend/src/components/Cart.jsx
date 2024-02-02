@@ -5,6 +5,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faHome, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import {Button} from 'react-bootstrap'
+import axios from "axios";
+import Getuserid from "./sessionid";
+
+
 
 const Cart = () => {
   const { cartlist, setCartlist } = useContext(Mycontext);
@@ -15,31 +19,111 @@ const Cart = () => {
     return storedQuantities ? JSON.parse(storedQuantities) : {};
   });
   const [totalAmount, setTotalAmount] = useState(0);
+  const [loading, setLoading] = useState("");
+   
+  
+
+ const idd = Getuserid();
+
+
+
+
+
+ useEffect(() => {
+   fetchCart();
+ }, []);
+
+ const fetchCart = async () => {
+   try {
+     const response = await axios.get(
+       `http://localhost:8000/api/users/fetchcart?id=${idd}`
+     );
+     setCartlist(response.data.products);
+     console.log("cart=", response.data.products);
+     console.log("a=", response.data.a);
+     console.log("cartlist=", cartlist);
+   } catch {
+     console.log("error");
+   }
+ };
+
+
+
+
+
+
+
+
+  // const handleQuantityChange = (itemId, newQuantity) => {
+  //   setQuantities((prevQuantities) => ({
+  //     ...prevQuantities,
+  //     [itemId]: newQuantity,
+  //   }));
+  // };
+
 
   const handleQuantityChange = (itemId, newQuantity) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [itemId]: newQuantity,
-    }));
+
+    console.log(itemId,newQuantity)
+    // Assuming you have a server endpoint to handle quantity updates
+    const serverEndpoint = "http://localhost:8000/api/users/cart";
+
+    // Make an Axios request to update the quantity on the server
+    axios
+      .put(serverEndpoint, {
+        id:idd,
+        productId: itemId,
+        quantity: newQuantity,
+      })
+      .then((response) => {
+        // Handle the server response if needed
+        console.log("Server response:", response.data);
+
+        // Update the local state with the new quantity
+        setQuantities((prevQuantities) => ({
+          ...prevQuantities,
+          [itemId]: newQuantity,
+        }));
+      })
+      .catch((error) => {
+        // Handle errors if any
+        console.error("Error updating quantity on the server:", error);
+      });
+      
   };
 
-  const removeCartitem = (id) => {
-    const updatedCart = cartlist.filter((item) => item.id !== id);
-    setCartlist(updatedCart);
-  };
 
-  useEffect(() => {
-    // Store quantities in localStorage whenever it changes
-    localStorage.setItem("cartQuantities", JSON.stringify(quantities));
 
-    // Recalculate total amount whenever cartlist or quantities changes
-    let total = 0;
-    cartlist.forEach((item) => {
-      const quantity = quantities[item.id] || 1;
-      total += item.price * quantity;
-    });
-    setTotalAmount(total);
-  }, [cartlist, quantities]);
+        const removeCartitem = async (productId) => {
+          console.log(productId);
+          try {
+            setLoading(true);
+
+            // Make a request to add the product to the wishlist
+            const response = await axios.post(
+              `http://localhost:8000/api/users/delcart`,
+              { id: productId }, // Request payload (if needed)
+              {
+                withCredentials: true, // Include credentials if using cookies for authentication
+              }
+            );
+
+            console.log("data=", response.data);
+            // Handle the response accordingly (e.g., show a success message, update UI)
+          } catch (error) {
+            console.error("Error adding to cart:");
+            // Handle the error (e.g., show an error message to the user)
+          } finally {
+            setLoading(false);
+          }
+          window.location.reload()
+
+        };
+
+
+
+
+ 
 
 
   const buy=()=>{
@@ -99,21 +183,28 @@ const Cart = () => {
                       </td>
                       <td>{item.description}</td>
                       <td>{item.price}</td>
+
+
+
+
                       <td>
                         <input
                           className="qinput"
                           type="number"
-                          value={quantities[item.id] || 1}
+                          Value={quantities[item._id] || 1}
                           onChange={(e) =>
                             handleQuantityChange(
-                              item.id,
+                              item._id,
                               parseInt(e.target.value, 10)
                             )
                           }
                         />
                       </td>
-                      <td>{(quantities[item.id] || 1) * item.price}</td>
-                      <td onClick={() => removeCartitem(item.id)}>
+                      
+
+
+                      <td>{(quantities[item._id] || 1) * item.price}</td>
+                      <td onClick={() => removeCartitem(item._id)}>
                         <FontAwesomeIcon icon={faTrash} />
                       </td>
                     </tr>

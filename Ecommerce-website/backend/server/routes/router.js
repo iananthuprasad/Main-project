@@ -35,11 +35,16 @@ router.post("/api/users/login", usercontroller.userLogin, userMiddleware);
 
 router.post("/api/users/wish", userMiddleware, usercontroller.addToWish);
 router.get("/api/users/wish",  usercontroller.getWish);
-
-
 router.get("/api/users/fetchwish", usercontroller.fetchWish)
-
 router.post("/api/users/delwish", userMiddleware, usercontroller.delwish);
+
+
+ router.post("/api/users/cart", userMiddleware, usercontroller.addToCart);
+ router.get("/api/users/cart", usercontroller.getCart);
+ router.get("/api/users/fetchcart", usercontroller.fetchCart);
+ router.post("/api/users/delcart", userMiddleware, usercontroller.delcart);
+
+router.put("/api/users/cart",  usercontroller.cartup);
 
 
 

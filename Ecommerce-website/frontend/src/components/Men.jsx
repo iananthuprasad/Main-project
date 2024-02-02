@@ -31,8 +31,7 @@ const Men = (props) => {
   //   console.log(item)
   // };
 
-  console.log(items)
-  console.log(wishlist)
+  
 
   
   const wish = async (productId) => {
@@ -62,6 +61,37 @@ const Men = (props) => {
 
 
 
+  
+
+  const cart = async (productId) => {
+    console.log(productId);
+    try {
+      setLoading(true);
+
+      // Make a request to add the product to the wishlist
+      const response = await axios.post(
+        `http://localhost:8000/api/users/cart`,
+        { id: productId}, // Request payload (if needed)
+        {
+          withCredentials: true, // Include credentials if using cookies for authentication
+        }
+      );
+
+      console.log("data=", response.data);
+
+      // Handle the response accordingly (e.g., show a success message, update UI)
+    } catch (error) {
+      console.error(
+        "Error adding to wishlist:",
+        error.response?.data || error.message
+      );
+      // Handle the error (e.g., show an error message to the user)
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
 
 
   const unlike = (id) => {
@@ -69,13 +99,13 @@ const Men = (props) => {
     setWishlist(xyz);
   };
 
-  const cart = (item) => {
-    if (cartlist.some((data) => item === data)) {
-      // If item is already in the cart, do nothing
-    } else {
-      setCartlist((prevCartlist) => [...prevCartlist, item]);
-    }
-  };
+  // const cart = (item) => {
+  //   if (cartlist.some((data) => item === data)) {
+  //     // If item is already in the cart, do nothing
+  //   } else {
+  //     setCartlist((prevCartlist) => [...prevCartlist, item]);
+  //   }
+  // };
 
   const listDetails = (id) => {
     const abc = id;
@@ -117,7 +147,7 @@ const Men = (props) => {
                           </Button>
 
                           <Button
-                            onClick={() => cart(matcheditem)}
+                            onClick={() => cart(matcheditem._id)}
                             style={{
                               backgroundColor: cartlist.some(
                                 (data) => matcheditem === data
@@ -203,7 +233,7 @@ const Men = (props) => {
                           <span className="cart-icon">wishlist</span>
                         </Button>
                         <Button
-                          onClick={() => cart(item)}
+                          onClick={() => cart(item._id)}
                           style={{
                             backgroundColor: cartlist.some(
                               (data) => item === data

@@ -25,7 +25,7 @@ const schemaUsers = new mongoose.Schema({
   cart: [
     {
       product: { type: mongoose.Schema.Types.ObjectId },
-      quantity: { type: Number, default: 1 },
+      quantity: { type: String, default: 1 },
     },
   ],
 });

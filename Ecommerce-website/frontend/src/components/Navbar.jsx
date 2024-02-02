@@ -46,7 +46,7 @@ const Navbar = () => {
     nav("/userdetails")
   }
  }
-console.log(sessionid())
+
 
   return (
     <div className="body">
